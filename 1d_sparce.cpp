@@ -12,6 +12,17 @@ public:
     Node() : next(nullptr), prev(nullptr) {}
 };
 
+class ArrayLinkedList {
+private:
+    Node* head{};
+    Node* tail{};
+    int length;
+
+public:
+    // default constructor
+    ArrayLinkedList() : head(nullptr), tail(nullptr) {}
+};
+
 int main() {
 
 
