@@ -46,7 +46,11 @@ public:
 };
 
 int main() {
-
+    ArrayLinkedList list;
+    list.Set(50, 5);
+    list.Set(20, 2);
+    list.Set(70, 7);
+    list.Set(40, 4);
 
 
     return 0;
