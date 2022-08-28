@@ -2,6 +2,7 @@
 using namespace std;
 
 class Node {
+public:
     int value;
     int idx;
     Node* next{};
