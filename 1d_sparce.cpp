@@ -10,6 +10,11 @@ private:
 public:
     // default constructor
     Node() : next(nullptr), prev(nullptr) {}
+
+    Node(int val, int idx) {
+        this->value = val;
+        this->idx = idx;
+    }
 };
 
 class ArrayLinkedList {
