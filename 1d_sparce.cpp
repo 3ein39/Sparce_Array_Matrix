@@ -31,6 +31,18 @@ private:
 public:
     // default constructor
     ArrayLinkedList() : head(nullptr), tail(nullptr) {}
+
+    void Set(int val, int idx) {
+        Node* item = new Node(val, idx);
+
+        if (!length)
+            head = tail = item;
+        else {
+            link(tail, item);
+            tail = item;
+        }
+        ++length;
+    }
 };
 
 int main() {
