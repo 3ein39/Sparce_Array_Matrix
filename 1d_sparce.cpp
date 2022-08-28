@@ -32,7 +32,7 @@ public:
     // default constructor
     ArrayLinkedList() : head(nullptr), tail(nullptr) {}
 
-    void Set(int val, int idx) {
+    void set_value(int val, int idx) {
         Node* item = new Node(val, idx);
 
         if (!length)
@@ -47,10 +47,10 @@ public:
 
 int main() {
     ArrayLinkedList list;
-    list.Set(50, 5);
-    list.Set(20, 2);
-    list.Set(70, 7);
-    list.Set(40, 4);
+    list.set_value(50, 5);
+    list.set_value(20, 2);
+    list.set_value(70, 7);
+    list.set_value(40, 4);
 
 
     return 0;
