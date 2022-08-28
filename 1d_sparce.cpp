@@ -23,6 +23,11 @@ private:
     Node* tail{};
     int length;
 
+    void link(Node* first, Node* second) {
+        first->next = second;
+        second->prev = first;
+    }
+
 public:
     // default constructor
     ArrayLinkedList() : head(nullptr), tail(nullptr) {}
