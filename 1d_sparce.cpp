@@ -35,13 +35,39 @@ public:
     void set_value(int val, int idx) {
         Node* item = new Node(val, idx);
 
-        if (!length)
+        if (!length) {
             head = tail = item;
-        else {
-            link(tail, item);
-            tail = item;
+            ++length;
         }
-        ++length;
+        else {
+            Node* p = head;
+            while (p) {
+                if (p->idx == item->idx)
+                    p->value = item->value;
+                else if (p->idx > item->idx){
+                    // here we have three cases
+                    // head, tail or in-between
+                    if (p == head){
+                        link(item, head);
+                        head = item;
+                    } else if (p == tail) {
+                        link(tail, item);
+                        tail = item;
+                    } else {
+                        link(p->prev, item);
+                        link(item, p);
+                    }
+                    ++length;
+                }
+                else if (!p->next) {
+                    link(tail, item);
+                    tail = item;
+                    ++length;
+                }
+
+                p = p->next;
+            }
+        }
     }
 };
 
