@@ -85,6 +85,18 @@ public:
             cout << p->value << " ", p = p->next;
         cout << endl;
     }
+
+    void print_array_nonzero() {
+        Node* p = head;
+
+        while (p) {
+            if (p->value != 0)
+                cout << p->value << " ";
+            p = p->next;
+        }
+        cout << endl;
+    }
+
 };
 
 int main() {
@@ -95,6 +107,7 @@ int main() {
     list.set_value(20, 2);
 
     list.print_array();
+    list.print_array_nonzero();
 
     return 0;
 }
