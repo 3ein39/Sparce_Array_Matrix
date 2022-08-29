@@ -115,11 +115,16 @@ public:
     }
 
     void print_array() {
-        Node* p = head;
+        Node* cur = head->next;
 
-        while (p)
-            cout << p->value << " ", p = p->next;
-        cout << endl;
+        for (int i = 0; i < array_length; ++i) {
+            if (cur && cur->idx == i) {
+                cout << cur->value << " ";
+                cur = cur->next;
+            } else
+                cout << "0 ";
+        }
+        cout << "\n";
     }
 
     void print_array_nonzero() {
