@@ -66,9 +66,11 @@ public:
     // default constructor
     ArrayLinkedList() : head(nullptr), tail(nullptr) {}
 
-    ArrayLinkedList(int length) {
-        for (int i = 0; i < length; ++i)
-            set_value(0, i);
+    ArrayLinkedList(int array_length) :
+            array_length(array_length) {
+        // Reading: https://en.wikipedia.org/wiki/Sentinel_node
+        tail = head = new Node(0, -1);
+        ++length;
     }
 
     void set_value(int val, int idx) {
