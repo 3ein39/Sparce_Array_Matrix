@@ -46,6 +46,22 @@ private:
         return middle;
     }
 
+    Node* get_index(int idx, bool is_create_if_missing) {
+        Node* prev_index = head;
+
+        while(prev_index->next && prev_index->next->idx < idx)
+            prev_index = prev_index->next;
+
+        bool found = prev_index->next && prev_index->next->idx == idx;
+
+        if (found)
+            return prev_index->next;
+
+        if (!is_create_if_missing)
+            return nullptr;
+
+        return embed_after(prev_index, 0, idx);
+    }
 public:
     // default constructor
     ArrayLinkedList() : head(nullptr), tail(nullptr) {}
