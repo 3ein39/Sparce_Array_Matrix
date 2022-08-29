@@ -40,41 +40,41 @@ public:
     void set_value(int val, int idx) {
         Node* item = new Node(val, idx);
 
+        Node* p = head;
         if (!length) {
             head = tail = item;
             ++length;
+            return;
         }
-        else {
-            Node* p = head;
-            while (p) {
-                if (p->idx == item->idx)
-                    p->value = item->value;
-                else if (p->idx > item->idx){
-                    // here we have three cases
-                    // head, tail or in-between
-                    if (p == head){
-                        link(item, head);
-                        head = item;
-                    } else if (p == tail) {
-                        link(tail, item);
-                        tail = item;
-                    } else {
-                        link(p->prev, item);
-                        link(item, p);
-                    }
-                    ++length;
-
-                    break;
-                }
-                else if (!p->next) {
+        while (p) {
+            if (p->idx == item->idx) {
+                p->value = item->value;
+                break;
+            }
+            else if (p->idx > item->idx){
+                // here we have three cases
+                // head, tail or in-between
+                if (p == head){
+                    link(item, head);
+                    head = item;
+                } else if (p == tail) {
                     link(tail, item);
                     tail = item;
-                    ++length;
-                    break;
+                } else {
+                    link(p->prev, item);
+                    link(item, p);
                 }
+                ++length;
 
-                p = p->next;
+                break;
             }
+            else if (!p->next) {
+                link(tail, item);
+                tail = item;
+                ++length;
+                break;
+            }
+            p = p->next;
         }
     }
 
