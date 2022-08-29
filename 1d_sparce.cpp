@@ -58,11 +58,14 @@ public:
                         link(item, p);
                     }
                     ++length;
+
+                    break;
                 }
                 else if (!p->next) {
                     link(tail, item);
                     tail = item;
                     ++length;
+                    break;
                 }
 
                 p = p->next;
@@ -74,9 +77,9 @@ public:
 int main() {
     ArrayLinkedList list;
     list.set_value(50, 5);
+    list.set_value(10, 1);
+    list.set_value(60, 6);
     list.set_value(20, 2);
-    list.set_value(70, 7);
-    list.set_value(40, 4);
 
 
     return 0;
