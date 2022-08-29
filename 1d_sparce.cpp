@@ -1,4 +1,6 @@
 #include<iostream>
+#include <cassert>
+
 using namespace std;
 
 class Node {
@@ -103,15 +105,15 @@ public:
         return node->value;
     }
 
-    void add(const ArrayLinkedList& other) {
-        Node* first = this->head;
-        Node* second = other.head;
+    void add(ArrayLinkedList &other) {
+        assert(array_length == other.array_length);
 
-        while (second && first) {
-            first->value += second->value;
-
-            first = first->next, second = second->next;
+        // Iterate on the other first, and add it to the current one
+        for (Node* other_cur = other.head->next; other_cur; other_cur = other_cur->next) {
+            Node* this_idx = get_index(other_cur->idx, true);  // **
+            this_idx->value += other_cur->value;
         }
+        // ** We can make this function more efficient, but let's keep simple
     }
 };
 
