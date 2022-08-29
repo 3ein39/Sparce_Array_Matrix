@@ -31,6 +31,21 @@ private:
             second->prev = first;
     }
 
+    Node* embed_after(Node* node_before, int value, int idx) {
+        Node* middle = new Node(value, idx);
+        ++length;
+
+        Node* node_after = node_before->next;
+        link(node_before, middle);
+
+        if (!node_after)
+            tail = middle;
+        else
+            link(middle, node_after);
+
+        return middle;
+    }
+
 public:
     // default constructor
     ArrayLinkedList() : head(nullptr), tail(nullptr) {}
