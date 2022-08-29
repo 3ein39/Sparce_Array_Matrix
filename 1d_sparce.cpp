@@ -81,15 +81,8 @@ public:
     void print_array() {
         Node* p = head;
 
-        int idx_to_print {0};
-        while (p) {
-            while (idx_to_print < p->idx)
-                cout << 0 << " ", ++idx_to_print;
-            cout << p->value << " ";
-
-            ++idx_to_print;
-            p = p->next;
-        }
+        while (p)
+            cout << p->value << " ", p = p->next;
         cout << endl;
     }
 };
