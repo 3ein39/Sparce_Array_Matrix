@@ -21,7 +21,8 @@ class ArrayLinkedList {
 private:
     Node* head{};
     Node* tail{};
-    int length;
+    int length = 0;         // total number of nodes
+    int array_length {};    // total number of array elements
 
     void link(Node* first, Node* second) {
         first->next = second;
@@ -131,7 +132,7 @@ int main() {
     ArrayLinkedList list2(10);
     list2.set_value(5, 5);
     list2.set_value(99, 0);
-    
+
     list.add(list2);
 
     list.print_array();
