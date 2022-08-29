@@ -25,8 +25,10 @@ private:
     int array_length {};    // total number of array elements
 
     void link(Node* first, Node* second) {
-        first->next = second;
-        second->prev = first;
+        if (first)
+            first->next = second;
+        if (second)
+            second->prev = first;
     }
 
 public:
