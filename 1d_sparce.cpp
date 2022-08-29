@@ -85,6 +85,7 @@ public:
             ++idx_to_print;
             p = p->next;
         }
+        cout << endl;
     }
 };
 
