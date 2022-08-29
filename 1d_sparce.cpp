@@ -109,6 +109,16 @@ public:
         return 0;
     }
 
+    void add(const ArrayLinkedList& other) {
+        Node* first = this->head;
+        Node* second = other.head;
+
+        while (second && first) {
+            first->value += second->value;
+
+            first = first->next, second = second->next;
+        }
+    }
 };
 
 int main() {
@@ -117,6 +127,12 @@ int main() {
     list.set_value(10, 1);
     list.set_value(60, 6);
     list.set_value(20, 2);
+
+    ArrayLinkedList list2(10);
+    list2.set_value(5, 5);
+    list2.set_value(99, 0);
+    
+    list.add(list2);
 
     list.print_array();
     list.print_array_nonzero();
