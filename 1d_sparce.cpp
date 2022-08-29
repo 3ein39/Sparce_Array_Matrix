@@ -128,14 +128,9 @@ public:
     }
 
     void print_array_nonzero() {
-        Node* p = head;
-
-        while (p) {
-            if (p->value != 0)
-                cout << p->value << " ";
-            p = p->next;
-        }
-        cout << endl;
+        for (Node* cur = head->next; cur; cur = cur->next)
+            cout << cur->value << " ";
+        cout << "\n";
     }
 
     const int& get_value(int _idx) {
