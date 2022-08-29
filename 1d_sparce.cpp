@@ -97,6 +97,18 @@ public:
         cout << endl;
     }
 
+    const int& get_value(int _idx) {
+        // assuming that given idx is in range
+        Node* p = head;
+
+        while(p) {
+            if (p->idx == _idx)
+                return p->value;
+            p = p->next;
+        }
+        return 0;
+    }
+
 };
 
 int main() {
