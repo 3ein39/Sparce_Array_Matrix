@@ -97,15 +97,10 @@ public:
     }
 
     const int& get_value(int _idx) {
-        // assuming that given idx is in range
-        Node* p = head;
-
-        while(p) {
-            if (p->idx == _idx)
-                return p->value;
-            p = p->next;
-        }
-        return 0;
+        Node* node = get_index(_idx, false);
+        if (!node)
+            return 0;
+        return node->value;
     }
 
     void add(const ArrayLinkedList& other) {
