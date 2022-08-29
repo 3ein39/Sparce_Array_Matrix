@@ -116,22 +116,32 @@ public:
         // ** We can make this function more efficient, but let's keep simple
     }
 };
+void test_index() {
+    ArrayLinkedList array(10);	// length 10
+    array.set_value(50, 5);
+    array.set_value(20, 2);
+    array.set_value(70, 7);
+    array.set_value(40, 4);
+    array.print_array();
+    // 0 0 20 0 40 50 0 70 0 0
+    array.print_array_nonzero();
+    // 20 40 50 70
+    cout << array.get_value(7) << "\n";	// 70
+
+    ArrayLinkedList array2(10);
+    array2.set_value(1, 4);
+    array2.set_value(3, 7);
+    array2.set_value(4, 6);
+
+    array.add(array2);
+    array.print_array();
+    // 0 0 20 0 41 50 4 73 0 0
+}
 
 int main() {
-    ArrayLinkedList list(10);
-    list.set_value(50, 5);
-    list.set_value(10, 1);
-    list.set_value(60, 6);
-    list.set_value(20, 2);
+    test_index();
 
-    ArrayLinkedList list2(10);
-    list2.set_value(5, 5);
-    list2.set_value(99, 0);
-
-    list.add(list2);
-
-    list.print_array();
-    list.print_array_nonzero();
+    cout << "\n\n\nNO RTE\n";
 
     return 0;
 }
