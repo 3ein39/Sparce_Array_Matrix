@@ -120,15 +120,14 @@ public:
 class RowNode {
 public:
     int row {};
-    ColumnLinkedList list;
+    ColumnLinkedList col_list;
+
     RowNode* next{};
     RowNode* prev{};
 
     RowNode() : next(nullptr), prev(nullptr) {}
 
-    RowNode(int row) {
-        this->row = row;
-    }
+    RowNode(int row, int cols) : row(row), col_list(cols) {}
 };
 
 class SparceMatrix {
