@@ -10,7 +10,7 @@ Representing an array of very huge indicies (e.g. 10^8) using doubly linked list
     - Set & Get positions.
     - Print & Add arrays.
 ---
-# [Sparce 2D Array](https://github.com/3ein39/Sparce_Array_Matrix/blob/main/2d_sparce.cpp) 
+# [SparceMatrix (2D Array)](https://github.com/3ein39/Sparce_Array_Matrix/blob/main/2d_sparce.cpp) 
 A more severe/common case is a sparse matrix where most of it are zeros which is implemented here.
 
 - Similarly, SparseMatrix acts like a 2D array.
