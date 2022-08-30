@@ -3,28 +3,28 @@
 
 using namespace std;
 
-class Node {
+class ColumnNode {
 public:
     int value;
-    int col;
-    Node* next{};
-    Node* prev{};
+    int column;
+    ColumnNode* next{};
+    ColumnNode* prev{};
 
     // default constructor
-    Node() : next(nullptr), prev(nullptr) {}
+    ColumnNode() : next(nullptr), prev(nullptr) {}
 
-    Node(int val, int col) {
+    ColumnNode(int val, int col) {
         this->value = val;
-        this->col = col;
+        this->column = col;
     }
 };
 
 class ArrayLinkedList {
-private:
+public:
     Node* head{};
     Node* tail{};
     int length = 0;         // total number of nodes
-    int array_length {};    // total number of array elements
+    int col_length {};    // total number of col elements
 
     void link(Node* first, Node* second) {
         if (first)
@@ -64,12 +64,12 @@ private:
 
         return embed_after(prev_index, 0, col);
     }
-public:
+
     // default constructor
     ArrayLinkedList() : head(nullptr), tail(nullptr) {}
 
-    ArrayLinkedList(int array_length) :
-            array_length(array_length) {
+    ArrayLinkedList(int col_length) :
+            col_length(col_length) {
         // Reading: https://en.wikipedia.org/wiki/Sentinel_node
         tail = head = new Node(0, -1);
         ++length;
@@ -79,10 +79,10 @@ public:
         get_col(col, true)->value = val;
     }
 
-    void print_array() {
+    void print_col() {
         Node* cur = head->next;
 
-        for (int i = 0; i < array_length; ++i) {
+        for (int i = 0; i < col_length; ++i) {
             if (cur && cur->col == i) {
                 cout << cur->value << " ";
                 cur = cur->next;
@@ -92,7 +92,7 @@ public:
         cout << "\n";
     }
 
-    void print_array_nonzero() {
+    void print_col_nonzero() {
         for (Node* cur = head->next; cur; cur = cur->next)
             cout << cur->value << " ";
         cout << "\n";
@@ -106,7 +106,7 @@ public:
     }
 
     void add(ArrayLinkedList &other) {
-        assert(array_length == other.array_length);
+        assert(col_length == other.col_length);
 
         // Iterate on the other first, and add it to the current one
         for (Node* other_cur = other.head->next; other_cur; other_cur = other_cur->next) {
@@ -118,6 +118,7 @@ public:
 };
 
 class RowNode {
+public:
     int row {};
     ArrayLinkedList list;
     RowNode* next{};
@@ -125,13 +126,78 @@ class RowNode {
 
     RowNode() : next(nullptr), prev(nullptr) {}
 
-    RowNode(int row, ArrayLinkedList list) {
+    RowNode(int row) {
         this->row = row;
-        this->list = list;
     }
 };
 
+class SparceMatrix {
+private:
+    RowNode* head{};
+    RowNode* tail{};
+    ArrayLinkedList list;
+    int row_length {};
+
+    void link(RowNode* first, RowNode* second) {
+        if (first)
+            first->next = second;
+        if (second)
+            second->prev = first;
+    }
+
+    RowNode* embed_after(RowNode* node_before, int row) {
+        RowNode* middle = new RowNode(row);
+        ++row_length;
+
+        RowNode* node_after = node_before->next;
+        link(node_before, middle);
+
+        if (!node_after)
+            tail = middle;
+        else
+            link(middle, node_after);
+
+        return middle;
+    }
+
+    RowNode* get_row(int row, bool is_create_if_missing) {
+        RowNode* prev_index = head;
+
+        while(prev_index->next && prev_index->next->row < row)
+            prev_index = prev_index->next;
+
+        bool found = prev_index->next && prev_index->next->row == row;
+
+        if (found)
+            return prev_index->next;
+
+        if (!is_create_if_missing)
+            return nullptr;
+
+        return embed_after(prev_index, 0);
+    }
+
+public:
+    SparceMatrix() : head(nullptr), tail(nullptr) {}
+
+    SparceMatrix(int rows, int cols) {
+        row_length = rows;
+        list.col_length = cols;
+    }
+
+    void print_matrix() {
+        for (int i = 0; i < row_length; ++i) {
+            list.print_col();
+            cout << endl;
+        }
+    }
+
+};
+
 int main() {
+    SparceMatrix mat(10, 10);
+
+    mat.print_matrix();
 
     cout << "\n\n\nNO RTE\n";
 
