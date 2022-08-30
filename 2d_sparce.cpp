@@ -130,12 +130,13 @@ public:
     RowNode(int row, int cols) : row(row), col_list(cols) {}
 };
 
-class SparceMatrix {
+class SparseMatrix {
 private:
     RowNode* head{};
     RowNode* tail{};
-    ColumnLinkedList list;
-    int row_length {};
+    int length {};
+    int rows {};
+    int cols {};
 
     void link(RowNode* first, RowNode* second) {
         if (first)
@@ -145,8 +146,8 @@ private:
     }
 
     RowNode* embed_after(RowNode* node_before, int row) {
-        RowNode* middle = new RowNode(row);
-        ++row_length;
+        RowNode* middle = new RowNode(row, cols);
+        ++length;
 
         RowNode* node_after = node_before->next;
         link(node_before, middle);
@@ -160,41 +161,86 @@ private:
     }
 
     RowNode* get_row(int row, bool is_create_if_missing) {
-        RowNode* prev_index = head;
+        // similar logic to insert sorted
+        RowNode* prev_row = head;
 
-        while(prev_index->next && prev_index->next->row < row)
-            prev_index = prev_index->next;
+        while(prev_row->next && prev_row->next->row < row)
+            prev_row = prev_row->next;
 
-        bool found = prev_index->next && prev_index->next->row == row;
+        bool found = prev_row->next && prev_row->next->row == row;
 
         if (found)
-            return prev_index->next;
+            return prev_row->next;
 
         if (!is_create_if_missing)
             return nullptr;
 
-        return embed_after(prev_index, 0);
+        return embed_after(prev_row, row);
     }
 
 public:
-    SparceMatrix() : head(nullptr), tail(nullptr) {}
+    SparseMatrix() : head(nullptr), tail(nullptr) {}
 
-    SparceMatrix(int rows, int cols) {
-        row_length = rows;
-        list.col_length = cols;
+    SparseMatrix(int rows, int cols) : rows(rows), cols(cols) {
+        // Dummy node of row = -1, to make coding shorter!
+        tail = head = new RowNode(-1, cols);
+        ++length;
+    }
+
+    void set_value(int value, int row, int col) {
+        assert(0 <= row && row < rows);
+        assert(0 <= col && col < cols);
+
+        RowNode* node = get_row(row, true);
+        node->col_list.set_value(value, col);
+    }
+
+    int get_value(int row, int col) {
+        assert(0 <= row && row < rows);
+        assert(0 <= col && col < cols);
+
+        RowNode* node = get_row(row, false);
+        if (!node)		// no such row
+            return 0;
+        return node->col_list.get_value(col);
     }
 
     void print_matrix() {
-        for (int i = 0; i < row_length; ++i) {
-            list.print_col();
-            cout << endl;
+        cout << "\nPrint Matrix: " << rows << " x " << cols << "\n";
+        RowNode* cur = head->next;
+        for (int r = 0; r < rows; ++r) {
+            if (cur && cur->row == r) {
+                cur->col_list.print_row();
+                cur = cur->next;
+            } else {
+                for (int j = 0; j < cols; ++j)
+                    cout << "0 ";
+                cout << "\n";
+            }
         }
     }
 
+    void print_matrix_nonzero() {
+        cout << "\nPrint Matrix: " << rows << " x " << cols << "\n";
+        for (RowNode* cur = head->next; cur; cur = cur->next)
+            cur->col_list.print_row_nonzero();
+    }
+
+    void add(SparseMatrix &other) {
+        assert(rows == other.rows && cols == other.cols);
+        // Iterate on the other first, and add it to the current one
+        for (RowNode* other_cur = other.head->next; other_cur; other_cur = other_cur->next) {
+            RowNode* this_row = get_row(other_cur->row, true);  // **
+            this_row->col_list.add(other_cur->col_list);
+        }
+        // ** We can make this function more efficient, but let's keep simple
+    }
 };
 
+
+
 int main() {
-    SparceMatrix mat(10, 10);
+    SparseMatrix mat(10, 10);
 
     mat.print_matrix();
 
