@@ -19,25 +19,25 @@ public:
     }
 };
 
-class ArrayLinkedList {
+class ColumnLinkedList {
 public:
-    Node* head{};
-    Node* tail{};
+    ColumnNode* head{};
+    ColumnNode* tail{};
     int length = 0;         // total number of nodes
-    int col_length {};    // total number of col elements
+    int cols {};    // total number of col elements
 
-    void link(Node* first, Node* second) {
+    void link(ColumnNode* first, ColumnNode* second) {
         if (first)
             first->next = second;
         if (second)
             second->prev = first;
     }
 
-    Node* embed_after(Node* node_before, int value, int idx) {
-        Node* middle = new Node(value, idx);
+    ColumnNode* embed_after(ColumnNode* node_before, int value, int col) {
+        ColumnNode* middle = new ColumnNode(value, col);
         ++length;
 
-        Node* node_after = node_before->next;
+        ColumnNode* node_after = node_before->next;
         link(node_before, middle);
 
         if (!node_after)
@@ -48,30 +48,30 @@ public:
         return middle;
     }
 
-    Node* get_col(int col, bool is_create_if_missing) {
-        Node* prev_index = head;
+    ColumnNode* get_col(int col, bool is_create_if_missing) {
+        ColumnNode* prev_col = head;
 
-        while(prev_index->next && prev_index->next->col < col)
-            prev_index = prev_index->next;
+        while(prev_col->next && prev_col->next->column < col)
+            prev_col = prev_col->next;
 
-        bool found = prev_index->next && prev_index->next->col == col;
+        bool found = prev_col->next && prev_col->next->column == col;
 
         if (found)
-            return prev_index->next;
+            return prev_col->next;
 
         if (!is_create_if_missing)
             return nullptr;
 
-        return embed_after(prev_index, 0, col);
+        return embed_after(prev_col, 0, col);
     }
 
     // default constructor
-    ArrayLinkedList() : head(nullptr), tail(nullptr) {}
+    ColumnLinkedList() : head(nullptr), tail(nullptr) {}
 
-    ArrayLinkedList(int col_length) :
-            col_length(col_length) {
+    ColumnLinkedList(int col_length) :
+            cols(col_length) {
         // Reading: https://en.wikipedia.org/wiki/Sentinel_node
-        tail = head = new Node(0, -1);
+        tail = head = new ColumnNode(0, -1);
         ++length;
     }
 
@@ -79,11 +79,11 @@ public:
         get_col(col, true)->value = val;
     }
 
-    void print_col() {
-        Node* cur = head->next;
+    void print_row() {
+        ColumnNode* cur = head->next;
 
-        for (int i = 0; i < col_length; ++i) {
-            if (cur && cur->col == i) {
+        for (int i = 0; i < cols; ++i) {
+            if (cur && cur->column == i) {
                 cout << cur->value << " ";
                 cur = cur->next;
             } else
@@ -92,25 +92,25 @@ public:
         cout << "\n";
     }
 
-    void print_col_nonzero() {
-        for (Node* cur = head->next; cur; cur = cur->next)
+    void print_row_nonzero() {
+        for (ColumnNode* cur = head->next; cur; cur = cur->next)
             cout << cur->value << " ";
         cout << "\n";
     }
 
-    const int& get_value(int _idx) {
-        Node* node = get_col(_idx, false);
+    const int& get_value(int col) {
+        ColumnNode* node = get_col(col, false);
         if (!node)
             return 0;
         return node->value;
     }
 
-    void add(ArrayLinkedList &other) {
-        assert(col_length == other.col_length);
+    void add(ColumnLinkedList &other) {
+        assert(cols == other.cols);
 
         // Iterate on the other first, and add it to the current one
-        for (Node* other_cur = other.head->next; other_cur; other_cur = other_cur->next) {
-            Node* this_idx = get_col(other_cur->col, true);  // **
+        for (ColumnNode* other_cur = other.head->next; other_cur; other_cur = other_cur->next) {
+            ColumnNode* this_idx = get_col(other_cur->column, true);  // **
             this_idx->value += other_cur->value;
         }
         // ** We can make this function more efficient, but let's keep simple
@@ -120,7 +120,7 @@ public:
 class RowNode {
 public:
     int row {};
-    ArrayLinkedList list;
+    ColumnLinkedList list;
     RowNode* next{};
     RowNode* prev{};
 
@@ -135,7 +135,7 @@ class SparceMatrix {
 private:
     RowNode* head{};
     RowNode* tail{};
-    ArrayLinkedList list;
+    ColumnLinkedList list;
     int row_length {};
 
     void link(RowNode* first, RowNode* second) {
